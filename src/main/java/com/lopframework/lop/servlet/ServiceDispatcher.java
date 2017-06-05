@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface ServiceDispatcher {
 	
-	void initStrategies();
+	void startUp();
 	
 	void doDispatch(HttpServletRequest req, HttpServletResponse resp);
 }

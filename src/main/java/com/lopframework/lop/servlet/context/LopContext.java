@@ -12,5 +12,11 @@ import java.util.Set;
  * @author wufenyun 
  */
 public interface LopContext {
+	
 	Set<?> getHandlers();
+	
+	/**
+	 * 注册handler
+	 */
+	void registHandlers();
 }

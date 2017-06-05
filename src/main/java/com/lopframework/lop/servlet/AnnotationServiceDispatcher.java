@@ -7,50 +7,35 @@ package com.lopframework.lop.servlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 
-import com.lopframework.lop.servlet.context.ConstantParamName;
 import com.lopframework.lop.servlet.context.LopContext;
-import com.lopframework.lop.servlet.context.RequestContext;
 
 /**
  * Description:  
  * Date: 2017年5月22日 下午5:09:15
  * @author wufenyun 
  */
-@Service
-public class AnnotationServiceDispatcher implements ServiceDispatcher {
+public class AnnotationServiceDispatcher implements ServiceDispatcher,InitializingBean {
+	
+	protected final static Logger logger = LoggerFactory.getLogger(AnnotationServiceDispatcher.class);
 	
 	private LopContext lopContext;
 	
-	@Override
-	public void initStrategies() {
-		
+	public void afterPropertiesSet() throws Exception {
+		logger.info("beanFactory init finished,now do afterPropertiesSet");
+		startUp();
 	}
 
-	@Override
-	public void doDispatch(HttpServletRequest req, HttpServletResponse resp) {
-		//1.buildRequestContext
-		buildRequestContext(req,resp);
-		//2.gethandler
-		//3.doService
+	public void startUp() {
+		lopContext.registHandlers();
+		logger.info("Lop started");
 	}
-	
-	/** 
-	 * Description:  构建请求context
-	 * @param req
-	 * @param resp
-	 * @return
-	 */
-	private RequestContext buildRequestContext(HttpServletRequest req, HttpServletResponse resp) {
-		RequestContext requestContext = new RequestContext();
-		requestContext.setAppkey(req.getParameter(ConstantParamName.APPKEY));
-		requestContext.setMethod(req.getParameter(ConstantParamName.MEHTOD));
-		requestContext.setSign(req.getParameter(ConstantParamName.SIGN));
-		requestContext.setAccessToken(req.getParameter(ConstantParamName.TIMESTAMP));
-		requestContext.setTimestamp(req.getParameter(ConstantParamName.TIMESTAMP));
-		requestContext.setVersion(req.getParameter(ConstantParamName.VERSION));
-		return requestContext;
+
+	public void doDispatch(HttpServletRequest req, HttpServletResponse resp) {
+		
 	}
 
 }
