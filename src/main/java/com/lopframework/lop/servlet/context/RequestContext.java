@@ -6,6 +6,8 @@ package com.lopframework.lop.servlet.context;
 
 import java.util.Map;
 
+import com.lopframework.lop.service.handler.ServiceHandler;
+
 /**
  * Description:  http请求上下文
  * Date: 2017年5月24日 上午11:23:52
@@ -21,7 +23,23 @@ public class RequestContext {
 	private String accessToken;
 	private String timestamp;
 	
-	private Map<String,String> params;
+	/**
+	 * 请求参数 
+	 */
+	private Map<String,Object> paramMap;
+	
+	/**
+	 * api对应的处理器 
+	 */
+	private ServiceHandler serviceHandler;
+	/**
+	 * 服务调用开始时间 
+	 */
+	private long serviceStartTime;
+	/**
+	 * 服务调用结束时间
+	 */
+	private long serviceEndTime;
 
 	public String getMethod() {
 		return method;
@@ -63,14 +81,6 @@ public class RequestContext {
 		this.token = token;
 	}
 
-	public Map<String, String> getParams() {
-		return params;
-	}
-
-	public void setParams(Map<String, String> params) {
-		this.params = params;
-	}
-
 	public String getAccessToken() {
 		return accessToken;
 	}
@@ -86,4 +96,36 @@ public class RequestContext {
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
+
+    public Map<String,Object> getParamMap() {
+        return paramMap;
+    }
+
+    public void setParamMap(Map<String,Object> paramMap) {
+        this.paramMap = paramMap;
+    }
+
+    public long getServiceStartTime() {
+        return serviceStartTime;
+    }
+
+    public void setServiceStartTime(long serviceStartTime) {
+        this.serviceStartTime = serviceStartTime;
+    }
+
+    public long getServiceEndTime() {
+        return serviceEndTime;
+    }
+
+    public void setServiceEndTime(long serviceEndTime) {
+        this.serviceEndTime = serviceEndTime;
+    }
+
+    public ServiceHandler getServiceHandler() {
+        return serviceHandler;
+    }
+
+    public void setServiceHandler(ServiceHandler serviceHandler) {
+        this.serviceHandler = serviceHandler;
+    }
 }

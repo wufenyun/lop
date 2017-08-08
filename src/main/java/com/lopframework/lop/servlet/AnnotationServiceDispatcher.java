@@ -11,7 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
+import com.lopframework.lop.error.LopError;
+import com.lopframework.lop.service.handler.ExecutionHandlerChain;
+import com.lopframework.lop.service.handler.HandlerChain;
 import com.lopframework.lop.servlet.context.LopContext;
+import com.lopframework.lop.servlet.context.RequestContext;
+import com.lopframework.lop.servlet.context.RequestContextBuilder;
 
 /**
  * Description:  
@@ -19,23 +24,60 @@ import com.lopframework.lop.servlet.context.LopContext;
  * @author wufenyun 
  */
 public class AnnotationServiceDispatcher implements ServiceDispatcher,InitializingBean {
-	
-	protected final static Logger logger = LoggerFactory.getLogger(AnnotationServiceDispatcher.class);
-	
-	private LopContext lopContext;
-	
-	public void afterPropertiesSet() throws Exception {
-		logger.info("beanFactory init finished,now do afterPropertiesSet");
-		startUp();
-	}
+    
+    protected final static Logger logger = LoggerFactory.getLogger(AnnotationServiceDispatcher.class);
+    
+    private LopContext lopContext;
+    
+    private HandlerChain handlerChain;
+    
+    public void afterPropertiesSet() throws Exception {
+        logger.info("beanFactory init finished,now do afterPropertiesSet");
+        startUp();
+    }
 
-	public void startUp() {
-		lopContext.registHandlers();
-		logger.info("Lop started");
-	}
+    public void startUp() {
+        lopContext.registHandlers();
+        logger.info("Lop started");
+    }
+    
+    private void initStrategyes() {
+        handlerChain = new ExecutionHandlerChain();
+    }
 
-	public void doDispatch(HttpServletRequest req, HttpServletResponse resp) {
-		
-	}
+    public void doDispatch(HttpServletRequest req, HttpServletResponse resp) {
+        RequestContextBuilder
+    }
 
+    private class ServiceTask implements Runnable {
+        
+        private HttpServletRequest req;
+        private HttpServletResponse resp;
+        
+        public ServiceTask(HttpServletRequest req, HttpServletResponse resp) {
+            this.req = req;
+            this.resp = resp;
+        }
+        
+        @Override
+        public void run() {
+            doService(req,resp);
+        }
+        
+        /** 
+         * Description: 执行请求任务 
+         * @param req
+         * @param resp
+         */
+        private void doService(HttpServletRequest req, HttpServletResponse resp) {
+            //构建请求上下文
+            RequestContext context = RequestContextBuilder.buildRequestContext(req, resp);
+            //执行一系列系统操作
+            LopError error = handlerChain.handle(context);
+            if(null == error) {
+                return;
+            }
+            
+        }
+    }
 }
