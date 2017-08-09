@@ -2,7 +2,7 @@
  * Package: com.lopframework.lop.service.handler
  * Description: 
  */
-package com.lopframework.lop.service.handler;
+package com.lopframework.lop.service;
 
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -12,7 +12,7 @@ import java.util.Set;
  * Date: 2017年8月8日 下午12:55:18
  * @author wufenyun 
  */
-public class ServiceHandler {
+public class HandlerMethod {
     
     /**
      * 处理类

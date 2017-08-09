@@ -6,7 +6,7 @@ package com.lopframework.lop.servlet.context;
 
 import java.util.Map;
 
-import com.lopframework.lop.service.handler.ServiceHandler;
+import com.lopframework.lop.service.HandlerMethod;
 
 /**
  * Description:  http请求上下文
@@ -31,7 +31,7 @@ public class RequestContext {
 	/**
 	 * api对应的处理器 
 	 */
-	private ServiceHandler serviceHandler;
+	private HandlerMethod serviceHandler;
 	/**
 	 * 服务调用开始时间 
 	 */
@@ -121,11 +121,11 @@ public class RequestContext {
         this.serviceEndTime = serviceEndTime;
     }
 
-    public ServiceHandler getServiceHandler() {
+    public HandlerMethod getServiceHandler() {
         return serviceHandler;
     }
 
-    public void setServiceHandler(ServiceHandler serviceHandler) {
+    public void setServiceHandler(HandlerMethod serviceHandler) {
         this.serviceHandler = serviceHandler;
     }
 }

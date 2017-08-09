@@ -31,12 +31,13 @@ public class LopServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 3278783794600319609L;
 	
-	private ServiceDispatcher serviceDispatcher;
+	private AnnotationServiceDispatcher serviceDispatcher;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		ApplicationContext context = getApplicationContext(config);
-		serviceDispatcher = context.getBean(ServiceDispatcher.class);
+		serviceDispatcher = context.getBean(AnnotationServiceDispatcher.class);
+		serviceDispatcher.setApplicationContext(context);
 	}
 	
 	@Override

@@ -9,6 +9,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.springframework.stereotype.Service;
+
 /**
  * @author Administrator
  *
@@ -16,14 +18,16 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ServiceHandlerMethod {
-	/**
-	 * api
-	 */
-	String method() default "";
+@Service
+public @interface ServiceProcessor {
 	
 	/**
-	 * api版本号
+	 * value
+	 */
+	String value() default "";
+	
+	/**
+	 * 版本号
 	 */
 	String version() default "";
 }

@@ -16,5 +16,7 @@ public interface ServiceDispatcher {
 	
 	void startUp();
 	
+	void shutDown();
+	
 	void doDispatch(HttpServletRequest req, HttpServletResponse resp);
 }

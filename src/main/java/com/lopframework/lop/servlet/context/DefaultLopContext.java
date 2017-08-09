@@ -13,7 +13,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import com.lopframework.lop.annotation.ServiceHandler;
+import com.lopframework.lop.annotation.ServiceProcessor;
 import com.lopframework.lop.servlet.AnnotationServiceDispatcher;
 
 /**
@@ -33,8 +33,8 @@ public class DefaultLopContext implements LopContext,ApplicationContextAware {
 	}
 
 	public void registHandlers() {
-		logger.debug("start to regist handlers");
-		Map<String,Object> handlersMap = applicationContext.getBeansWithAnnotation(ServiceHandler.class);
+		logger.info("start to regist handlers");
+		Map<String,Object> handlersMap = applicationContext.getBeansWithAnnotation(ServiceProcessor.class);
 		if(null == handlersMap) {
 			return;
 		}
