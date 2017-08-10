@@ -4,7 +4,11 @@
  */
 package com.lopframework.lop.servlet.context;
 
-import java.util.Set;
+import java.util.Map;
+
+import org.springframework.context.ApplicationContext;
+
+import com.lopframework.lop.service.HandlerMethod;
 
 /**
  * Description:  Lop上下文环境
@@ -13,10 +17,12 @@ import java.util.Set;
  */
 public interface LopContext {
 	
-	Set<?> getHandlers();
+    Map<String,HandlerMethod> getHandlers();
 	
 	/**
 	 * 注册handler
 	 */
 	void registHandlers();
+	
+	void setApplicationContext(ApplicationContext applicationContext);
 }

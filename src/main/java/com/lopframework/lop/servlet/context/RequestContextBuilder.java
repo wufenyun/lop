@@ -22,12 +22,14 @@ public class RequestContextBuilder {
      */
     public static RequestContext buildRequestContext(HttpServletRequest req, HttpServletResponse resp) {
         RequestContext requestContext = new RequestContext();
+        //requestContext.setMethod(req.getParameter(ConstantParamName.MEHTOD));
+        //requestContext.setVersion(req.getParameter(ConstantParamName.VERSION));
+        requestContext.setMethod("api.hello");
+        requestContext.setVersion("1.0");
         requestContext.setAppkey(req.getParameter(ConstantParamName.APPKEY));
-        requestContext.setMethod(req.getParameter(ConstantParamName.MEHTOD));
         requestContext.setSign(req.getParameter(ConstantParamName.SIGN));
         requestContext.setAccessToken(req.getParameter(ConstantParamName.TIMESTAMP));
         requestContext.setTimestamp(req.getParameter(ConstantParamName.TIMESTAMP));
-        requestContext.setVersion(req.getParameter(ConstantParamName.VERSION));
         return requestContext;
     }
 }

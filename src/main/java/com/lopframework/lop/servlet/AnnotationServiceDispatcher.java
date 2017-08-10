@@ -14,11 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.context.support.WebApplicationObjectSupport;
 
 import com.lopframework.lop.error.LopError;
 import com.lopframework.lop.service.HandlerMethod;
@@ -35,11 +33,11 @@ import com.lopframework.lop.servlet.context.RequestContextBuilder;
  * Date: 2017年5月22日 下午5:09:15
  * @author wufenyun 
  */
-public class AnnotationServiceDispatcher implements ServiceDispatcher,ApplicationContextAware, InitializingBean, DisposableBean {
+public class AnnotationServiceDispatcher extends WebApplicationObjectSupport implements ServiceDispatcher, InitializingBean, DisposableBean {
     
     private final static Logger logger = LoggerFactory.getLogger(AnnotationServiceDispatcher.class);
     
-    private LopContext lopContext = new DefaultLopContext();
+    private final LopContext lopContext = new DefaultLopContext();
     
     private HandlerChain handlerChain;
     
@@ -49,7 +47,6 @@ public class AnnotationServiceDispatcher implements ServiceDispatcher,Applicatio
     
     private ServiceAdapter serviceAdapter = new ServiceAdapter();
     
-    private ApplicationContext applicationContext;
     
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -59,8 +56,9 @@ public class AnnotationServiceDispatcher implements ServiceDispatcher,Applicatio
 
     public void startUp() {
         executor = new ThreadPoolExecutor(100, 200, 5, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>());
-        serviceMapper = new ServiceMapper(applicationContext);
-        serviceMapper.registHandlers();
+        lopContext.setApplicationContext(getApplicationContext());
+        lopContext.registHandlers();
+        serviceMapper = new ServiceMapper(lopContext);
         logger.info("Lop started");
     }
     
@@ -74,14 +72,6 @@ public class AnnotationServiceDispatcher implements ServiceDispatcher,Applicatio
         
     }
     
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
-    
-    public ApplicationContext getApplicationContext() throws BeansException {
-        return this.applicationContext;
-    }
     
     private class ServiceTask implements Runnable {
         
@@ -107,10 +97,10 @@ public class AnnotationServiceDispatcher implements ServiceDispatcher,Applicatio
             //构建请求上下文
             RequestContext requestContext = RequestContextBuilder.buildRequestContext(req, resp);
             //执行一系列系统操作
-            LopError error = handlerChain.handle(requestContext);
-            if(null == error) {
-                return;
-            }
+//            LopError error = handlerChain.handle(requestContext);
+//            if(null == error) {
+//                return;
+//            }
             try {
                 HandlerMethod handler = serviceMapper.getHandlerMethod(requestContext);
                 Object response = serviceAdapter.invokeHandlerMethod(handler);
@@ -122,7 +112,6 @@ public class AnnotationServiceDispatcher implements ServiceDispatcher,Applicatio
 
     @Override
     public void shutDown() {
-        // TODO Auto-generated method stub
         
     }
 

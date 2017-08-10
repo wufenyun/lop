@@ -8,10 +8,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 
-import com.lopframework.lop.annotation.ServiceProcessor;
-import com.lopframework.lop.servlet.AnnotationServiceDispatcher;
 import com.lopframework.lop.servlet.context.LopContext;
 import com.lopframework.lop.servlet.context.RequestContext;
 
@@ -24,25 +21,23 @@ public class ServiceMapper {
     
     private final static Logger logger = LoggerFactory.getLogger(ServiceMapper.class);
     
-    private ApplicationContext applicationContext;
+    private LopContext lopContext;
     
-    public ServiceMapper(ApplicationContext applicationContext){
-        this.applicationContext = applicationContext;
+    public ServiceMapper(LopContext lopContext){
+        this.lopContext = lopContext;
     }
     
     public HandlerMethod getHandlerMethod(RequestContext requestContext) {
-        return null;
+        String api = requestContext.getMethod() + "@" + requestContext.getVersion();
+        Map<String, HandlerMethod> handlers = lopContext.getHandlers();
+        HandlerMethod handler = handlers.get(api);
+        if(null == handler) {
+            logger.debug("mapping {} to service failed",api);
+            throw new RuntimeException();
+        } else {
+            logger.debug("mapping {} to service success",api);
+            return handler;
+        }
     }
     
-    public void registHandlers() {
-        logger.info("start to regist handlers");
-        Map<String,Object> handlersMap = applicationContext.getBeansWithAnnotation(ServiceProcessor.class);
-        if(null == handlersMap) {
-            return;
-        }
-        for(Map.Entry<String, Object> entry:handlersMap.entrySet()) {
-            Object obj = entry.getValue();
-            logger.info("regist handler:{}",entry.getKey());
-        }
-    }
 }
