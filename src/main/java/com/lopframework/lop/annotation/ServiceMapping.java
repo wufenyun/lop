@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ServiceProcessorMethod {
+public @interface ServiceMapping {
 	/**
 	 * api
 	 */

@@ -5,7 +5,7 @@
 package com.lopframework.lop.service.handler;
 
 import com.lopframework.lop.error.LopError;
-import com.lopframework.lop.servlet.context.RequestContext;
+import com.lopframework.lop.service.request.Request;
 
 /**
  * Description: 预处理执行器，在服务正式调用之前调用的处理器
@@ -19,5 +19,5 @@ public interface PreprocessingHandler {
      * @param context
      * @return 处理成功返回true，处理失败或者异常返回false
      */
-    LopError proccess(RequestContext context);
+    LopError proccess(Request request);
 }

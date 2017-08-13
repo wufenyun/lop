@@ -7,8 +7,8 @@ package com.lopframework.lop.servlet.context;
 import java.util.Map;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.method.HandlerMethod;
 
-import com.lopframework.lop.service.HandlerMethod;
 
 /**
  * Description:  Lop上下文环境

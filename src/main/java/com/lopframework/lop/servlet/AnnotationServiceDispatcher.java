@@ -17,16 +17,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.context.support.WebApplicationObjectSupport;
+import org.springframework.web.method.HandlerMethod;
 
-import com.lopframework.lop.error.LopError;
-import com.lopframework.lop.service.HandlerMethod;
 import com.lopframework.lop.service.ServiceAdapter;
-import com.lopframework.lop.service.ServiceMapper;
 import com.lopframework.lop.service.handler.HandlerChain;
+import com.lopframework.lop.service.request.Request;
+import com.lopframework.lop.service.surpport.ServiceMapper;
 import com.lopframework.lop.servlet.context.DefaultLopContext;
 import com.lopframework.lop.servlet.context.LopContext;
-import com.lopframework.lop.servlet.context.RequestContext;
-import com.lopframework.lop.servlet.context.RequestContextBuilder;
+import com.lopframework.lop.servlet.context.RequestBuilder;
 
 /**
  * Description:  
@@ -95,14 +94,14 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
          */
         private void callService(HttpServletRequest req, HttpServletResponse resp) {
             //构建请求上下文
-            RequestContext requestContext = RequestContextBuilder.buildRequestContext(req, resp);
+            Request request = RequestBuilder.buildRequestContext(req, resp);
             //执行一系列系统操作
 //            LopError error = handlerChain.handle(requestContext);
 //            if(null == error) {
 //                return;
 //            }
             try {
-                HandlerMethod handler = serviceMapper.getHandlerMethod(requestContext);
+                HandlerMethod handler = serviceMapper.getHandlerMethod(request);
                 Object response = serviceAdapter.invokeHandlerMethod(handler);
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 e.printStackTrace();

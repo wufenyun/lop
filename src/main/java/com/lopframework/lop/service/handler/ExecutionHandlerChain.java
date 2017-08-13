@@ -7,7 +7,7 @@ package com.lopframework.lop.service.handler;
 import java.util.LinkedList;
 
 import com.lopframework.lop.error.LopError;
-import com.lopframework.lop.servlet.context.RequestContext;
+import com.lopframework.lop.service.request.Request;
 
 /**
  * Description: 需要执行的处理链路
@@ -63,7 +63,7 @@ public class ExecutionHandlerChain implements HandlerChain {
     }
     
     @Override
-    public LopError handle(RequestContext context) {
+    public LopError handle(Request context) {
         LopError error = null;
         //先执行系统级预处理器
         for(PreprocessingHandler systemHandler:systemHandlers) {

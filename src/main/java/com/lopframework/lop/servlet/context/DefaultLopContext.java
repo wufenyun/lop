@@ -13,10 +13,10 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.method.HandlerMethod;
 
 import com.lopframework.lop.annotation.ServiceProcessor;
-import com.lopframework.lop.annotation.ServiceProcessorMethod;
-import com.lopframework.lop.service.HandlerMethod;
+import com.lopframework.lop.annotation.ServiceMapping;
 
 /**
  * Description:  
@@ -50,18 +50,16 @@ public class DefaultLopContext implements LopContext {
                 @Override
                 public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
                     ReflectionUtils.makeAccessible(method);
-                    ServiceProcessorMethod serviceMethodAnno = AnnotationUtils.findAnnotation(method,ServiceProcessorMethod.class);
+                    ServiceMapping serviceMethodAnno = AnnotationUtils.findAnnotation(method,ServiceMapping.class);
                     String key = serviceMethodAnno.method()+"@" + serviceMethodAnno.version();
-                    HandlerMethod handlerMethod = new HandlerMethod();
-                    handlerMethod.setHandler(handler);
-                    handlerMethod.setMethod(method);
+                    HandlerMethod handlerMethod = new HandlerMethod(handler,method);
                     handlerMethods.put(key, handlerMethod);
                     logger.info("regist method handler:{}",key);
                 }
             }, new ReflectionUtils.MethodFilter() {
                 @Override
                 public boolean matches(Method method) {
-                    return null != AnnotationUtils.findAnnotation(method,ServiceProcessorMethod.class);
+                    return null != AnnotationUtils.findAnnotation(method,ServiceMapping.class);
                 }
             });
 			

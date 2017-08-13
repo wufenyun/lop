@@ -6,6 +6,8 @@ package com.lopframework.lop.service;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.springframework.web.method.HandlerMethod;
+
 /**
  * Description:  
  * Date: 2017年8月9日 上午11:09:35
@@ -14,6 +16,6 @@ import java.lang.reflect.InvocationTargetException;
 public class ServiceAdapter {
     
     public Object invokeHandlerMethod(HandlerMethod handler) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return handler.getMethod().invoke(handler.getHandler());
+        return handler.getMethod().invoke(handler.getBean());
     }
 }

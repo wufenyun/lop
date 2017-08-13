@@ -7,7 +7,7 @@ package com.lopframework.lop.service.handler;
 import java.util.LinkedList;
 
 import com.lopframework.lop.error.LopError;
-import com.lopframework.lop.servlet.context.RequestContext;
+import com.lopframework.lop.service.request.Request;
 
 /**
  * Description:  
@@ -28,5 +28,5 @@ public interface HandlerChain {
     
     LinkedList<PreprocessingHandler> getSubscriberHandler();
     
-    LopError handle(RequestContext context);
+    LopError handle(Request request);
 }

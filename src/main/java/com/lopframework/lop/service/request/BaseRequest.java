@@ -2,18 +2,18 @@
  * Package: com.lopframework.lop.servlet.context
  * Description: 
  */
-package com.lopframework.lop.servlet.context;
+package com.lopframework.lop.service.request;
 
 import java.util.Map;
 
-import com.lopframework.lop.service.HandlerMethod;
+import org.springframework.web.method.HandlerMethod;
 
 /**
- * Description:  http请求上下文
+ * Description:  基础请求类，包含了系统级参数
  * Date: 2017年5月24日 上午11:23:52
  * @author wufenyun 
  */
-public class RequestContext {
+public class BaseRequest implements Request {
 	
 	private String method;
 	private String version;
