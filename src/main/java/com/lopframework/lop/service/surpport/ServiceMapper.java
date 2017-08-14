@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.method.HandlerMethod;
 
+import com.lopframework.lop.exception.NoApiFoundException;
 import com.lopframework.lop.service.request.Request;
 import com.lopframework.lop.servlet.context.LopContext;
 
@@ -34,7 +35,7 @@ public class ServiceMapper {
         HandlerMethod handler = handlers.get(api);
         if(null == handler) {
             logger.debug("mapping {} to service failed",api);
-            throw new RuntimeException();
+            throw new NoApiFoundException(request.getMethod(),request.getVersion());
         } else {
             logger.debug("mapping {} to service success",api);
             return handler;

@@ -4,6 +4,8 @@
  */
 package com.lopframework.lop.servlet;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -19,9 +21,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.test.util.JsonExpectationsHelper;
 import org.springframework.web.context.support.WebApplicationObjectSupport;
 import org.springframework.web.method.HandlerMethod;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.lopframework.lop.service.ServiceAdapter;
 import com.lopframework.lop.service.handler.HandlerChain;
 import com.lopframework.lop.service.request.Request;
@@ -111,25 +116,53 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
          * @param resp
          */
         private void callService(HttpServletRequest req, HttpServletResponse resp) {
-            //构建包含系统参数的基础请求对象
-            Request lopRequest = RequestBuilder.buildBaseRequest(req, resp);
-            SimpleSession session = RequestBuilder.buildSimpleSession(req);
-            session.setRequest(lopRequest);
-            SessionHolder.setSession(session);
-            //执行一系列系统操作
-//            LopError error = handlerChain.handle(requestContext);
-//            if(null == error) {
-//                return;
-//            }
             try {
-                HandlerMethod handler = serviceMapper.getHandlerMethod(lopRequest);
-                Object response = serviceAdapter.invokeHandlerMethod(handler,req,resp);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                e.printStackTrace();
+            	//构建包含系统参数的基础请求对象
+                Request lopRequest = RequestBuilder.buildBaseRequest(req, resp);
+                SimpleSession session = RequestBuilder.buildSimpleSession(req);
+                session.setRequest(lopRequest);
+                SessionHolder.setSession(session);
+                //执行一系列系统操作
+//                LopError error = handlerChain.handle(requestContext);
+//                if(null == error) {
+//                    return;
+//                }
+                try {
+                	// Determine handler for the current request.
+                    HandlerMethod mappedHandler = serviceMapper.getHandlerMethod(lopRequest);
+                    Object response = serviceAdapter.invokeHandlerMethod(mappedHandler,req,resp);
+                    handleResponse(response, resp);
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            } catch(Exception e) {
+            	
+            } finally {
+            	
             }
         }
     }
 
+    private void handleResponse(Object result,HttpServletResponse response) {
+    	//将实体对象转换为JSON Object转换  
+        Object responseJSONObject = JSON.toJSON(result);
+        response.setCharacterEncoding("UTF-8");  
+        response.setContentType("application/json; charset=utf-8");  
+        PrintWriter out = null;  
+        try {  
+            out = response.getWriter();  
+            out.append(responseJSONObject.toString());  
+            logger.debug("返回是\n");  
+            logger.debug(responseJSONObject.toString());  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        } finally {  
+            if (out != null) {  
+                out.close();  
+            }  
+        }  
+    }
+    
     @Override
     public void shutDown() {
         
