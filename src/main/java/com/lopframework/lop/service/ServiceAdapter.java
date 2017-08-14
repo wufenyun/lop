@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.method.HandlerMethod;
 
@@ -46,8 +45,7 @@ public class ServiceAdapter {
         for(MethodParameter param:params) {
             Class<?> clazz = param.getParameterType();
             logger.debug("解析服务方法参数：{}",clazz);
-            //argumentResolver.resolveArgument(argumentResolver,req,null);
-            Object obj = BeanUtils.instantiate(clazz);
+            Object obj = argumentResolver.resolveArgument(param,req);
             list.add(obj);
         }
         return list.toArray();

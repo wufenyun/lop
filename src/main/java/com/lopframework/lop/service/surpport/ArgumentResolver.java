@@ -1,8 +1,8 @@
 package com.lopframework.lop.service.surpport;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.core.MethodParameter;
-import org.springframework.web.bind.support.WebDataBinderFactory;
-import org.springframework.web.context.request.NativeWebRequest;
 
 /**
 * @Description: 
@@ -13,6 +13,5 @@ public interface ArgumentResolver {
 	
 	boolean supportsParameter(MethodParameter parameter);
 
-	Object resolveArgument(MethodParameter parameter,
-			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception;
+	Object resolveArgument(MethodParameter parameter,HttpServletRequest webRequest);
 }
