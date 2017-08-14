@@ -20,8 +20,6 @@ import com.lopframework.lop.servlet.context.LopContext;
  */
 public class ServiceMapper {
     
-    private ArgumentResolver argumentResolver = new DefaultArgumentResolver();
-    
     private LopContext lopContext;
     
     private final static Logger logger = LoggerFactory.getLogger(ServiceMapper.class);
@@ -42,13 +40,4 @@ public class ServiceMapper {
             return handler;
         }
     }
-
-	public ArgumentResolver getArgumentResolver() {
-		return argumentResolver;
-	}
-
-	public void setArgumentResolver(ArgumentResolver argumentResolver) {
-		this.argumentResolver = argumentResolver;
-	}
-    
 }

@@ -14,4 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 public interface Session {
 	
 	HttpServletRequest getHttpServletRequest();
+	
+	void addAttribute(String name,Object value);
+	
+	Object getAttribute(String name);
+	
+	void removeAttribute(String name);
+	
+	Request getBaseRequest();
 }

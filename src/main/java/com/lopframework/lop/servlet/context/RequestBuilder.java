@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.lopframework.lop.service.request.BaseRequest;
 import com.lopframework.lop.service.request.Request;
+import com.lopframework.lop.service.request.Session;
+import com.lopframework.lop.service.request.SimpleSession;
 
 /**
  * Description:  
@@ -23,16 +25,20 @@ public class RequestBuilder {
      * @param resp
      * @return
      */
-    public static Request buildRequestContext(HttpServletRequest req, HttpServletResponse resp) {
-        BaseRequest requestContext = new BaseRequest();
-        //requestContext.setMethod(req.getParameter(ConstantParamName.MEHTOD));
-        //requestContext.setVersion(req.getParameter(ConstantParamName.VERSION));
-        requestContext.setMethod("api.hello");
-        requestContext.setVersion("1.0");
-        requestContext.setAppkey(req.getParameter(ConstantParamName.APPKEY));
-        requestContext.setSign(req.getParameter(ConstantParamName.SIGN));
-        requestContext.setAccessToken(req.getParameter(ConstantParamName.TIMESTAMP));
-        requestContext.setTimestamp(req.getParameter(ConstantParamName.TIMESTAMP));
-        return requestContext;
+    public static Request buildBaseRequest(HttpServletRequest req, HttpServletResponse resp) {
+        BaseRequest request = new BaseRequest();
+        request.setMethod(req.getParameter(ConstantParamName.MEHTOD));
+        request.setVersion(req.getParameter(ConstantParamName.VERSION));
+        request.setAppkey(req.getParameter(ConstantParamName.APPKEY));
+        request.setSign(req.getParameter(ConstantParamName.SIGN));
+        request.setAccessToken(req.getParameter(ConstantParamName.TIMESTAMP));
+        request.setTimestamp(req.getParameter(ConstantParamName.TIMESTAMP));
+        return request;
+    }
+    
+    public static SimpleSession buildSimpleSession(HttpServletRequest req) {
+        SimpleSession session = new SimpleSession();
+        session.setHttpServletRequest(req);
+        return session;
     }
 }
