@@ -42,15 +42,28 @@ public class DefaultArgumentResolver implements ArgumentResolver {
             String filedName = field.getName();
             String value = request.getParameter(filedName);
             if(!StringUtils.isEmpty(value)) {
-                String type = field.getType().toString();//得到此属性的类型
+                //得到此属性的类型
+                String type = field.getType().toString();
                 if (type.endsWith("String")) {
-                   ReflectionUtils.setField(field, target, value);    //给属性设值
-                }else if(type.endsWith("int") || type.endsWith("Integer")){
-                   ReflectionUtils.setField(field, target, new Integer(value));       //给属性设值
+                   //给属性设值
+                   ReflectionUtils.setField(field, target, value);
+                }else if(type.endsWith("short") || type.endsWith("Short")){
+                    ReflectionUtils.setField(field, target, Short.valueOf(value));
+                 }else if(type.endsWith("int") || type.endsWith("Integer")){
+                   ReflectionUtils.setField(field, target, Integer.valueOf(value));
+                }else if(type.endsWith("long") || type.endsWith("Long")){
+                    ReflectionUtils.setField(field, target, Long.valueOf(value));       
+                }else if(type.endsWith("fload") || type.endsWith("Float")){
+                    ReflectionUtils.setField(field, target, Float.valueOf(value));
+                }else if(type.endsWith("double") || type.endsWith("Double")){
+                    ReflectionUtils.setField(field, target, Double.valueOf(value));
+                }else if(type.endsWith("char") || type.endsWith("Character")){
+                    ReflectionUtils.setField(field, target, value);
+                }else if(type.endsWith("boolean") || type.endsWith("Boolean")){
+                    ReflectionUtils.setField(field, target, Boolean.valueOf(value));
                 }else{
-                    logger.debug("无法解析的属性类型：{}",field.getType());
+                    logger.warn("无法解析的属性类型：{}",field.getType());
                 }
-                
             }
         }
         return target;

@@ -5,7 +5,6 @@
 package com.lopframework.lop.servlet;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -91,7 +90,6 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
         
     }
     
-    
     private class ServiceTask implements Runnable {
         
         private HttpServletRequest req;
@@ -137,9 +135,6 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
         
     }
 
-
-
-    
 
    
 }
