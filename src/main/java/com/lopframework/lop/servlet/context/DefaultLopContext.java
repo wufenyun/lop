@@ -37,7 +37,7 @@ public class DefaultLopContext implements LopContext {
 	}
 	
 	@Override
-	public void registHandlers() {
+	public void registMethodHandlers() {
 		logger.info("start to regist handlers");
 		Map<String,Object> handlersMap = applicationContext.getBeansWithAnnotation(ServiceProcessor.class);
 		if(null == handlersMap) {
