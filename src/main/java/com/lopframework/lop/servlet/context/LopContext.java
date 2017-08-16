@@ -20,9 +20,9 @@ public interface LopContext {
     Map<String,HandlerMethod> getHandlers();
 	
 	/**
-	 * 注册handler
+	 * 注册api handler
 	 */
-	void registHandlers();
+	void registMethodHandlers();
 	
 	void setApplicationContext(ApplicationContext applicationContext);
 }

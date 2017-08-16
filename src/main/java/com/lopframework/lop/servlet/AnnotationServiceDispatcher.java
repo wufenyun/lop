@@ -21,12 +21,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.test.util.JsonExpectationsHelper;
 import org.springframework.web.context.support.WebApplicationObjectSupport;
 import org.springframework.web.method.HandlerMethod;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.lopframework.lop.error.LopError;
 import com.lopframework.lop.service.ServiceAdapter;
 import com.lopframework.lop.service.handler.HandlerChain;
 import com.lopframework.lop.service.request.Request;
@@ -66,7 +65,7 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
     public void startUp() {
         executor = new ThreadPoolExecutor(100, 200, 5, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>());
         lopContext.setApplicationContext(getApplicationContext());
-        lopContext.registHandlers();
+        lopContext.registMethodHandlers();
         serviceMapper = new ServiceMapper(lopContext);
         logger.info("Lop started");
     }
@@ -88,11 +87,6 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
             e.printStackTrace();
             logger.error(e.getMessage());
         }
-    }
-    
-    @Override
-    public void destroy() throws Exception {
-        
     }
     
     private class ServiceTask implements Runnable {
@@ -123,14 +117,15 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
                 session.setRequest(lopRequest);
                 SessionHolder.setSession(session);
                 //执行一系列系统操作
-//                LopError error = handlerChain.handle(requestContext);
-//                if(null == error) {
-//                    return;
-//                }
+                LopError error = handlerChain.handle(lopRequest);
+                if(null == error) {
+                    return;
+                }
                 try {
                 	// Determine handler for the current request.
                     HandlerMethod mappedHandler = serviceMapper.getHandlerMethod(lopRequest);
                     Object response = serviceAdapter.invokeHandlerMethod(mappedHandler,req,resp);
+                    //handler HttpServletResponse
                     handleResponse(response, resp);
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     e.printStackTrace();
@@ -149,11 +144,10 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
         response.setCharacterEncoding("UTF-8");  
         response.setContentType("application/json; charset=utf-8");  
         PrintWriter out = null;  
-        try {  
+        try {
             out = response.getWriter();  
             out.append(responseJSONObject.toString());  
-            logger.debug("返回是\n");  
-            logger.debug(responseJSONObject.toString());  
+            logger.debug("return result:{}",responseJSONObject.toString());  
         } catch (IOException e) {  
             e.printStackTrace();  
         } finally {  
@@ -161,6 +155,12 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
                 out.close();  
             }  
         }  
+    }
+    
+
+    @Override
+    public void destroy() throws Exception {
+        
     }
     
     @Override

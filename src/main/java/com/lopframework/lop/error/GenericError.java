@@ -22,6 +22,10 @@ public class GenericError implements LopError {
         this.code = code;
         this.msg = msg;
     }
+    
+    public static LopError createGenericError(String code,String msg) {
+    	return new GenericError(code,msg);
+    }
 
     @Override
     public String getMessage() {
