@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.lopframework.lop.servlet.context;
+package com.lopframework.lop.service.request;
 
 import com.lopframework.lop.service.request.Session;
 

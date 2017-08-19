@@ -2,15 +2,12 @@
  * Package: com.lopframework.lop.servlet.context
  * Description: 
  */
-package com.lopframework.lop.servlet.context;
+package com.lopframework.lop.service.request;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.lopframework.lop.service.request.BaseRequest;
-import com.lopframework.lop.service.request.Request;
-import com.lopframework.lop.service.request.Session;
-import com.lopframework.lop.service.request.SimpleSession;
+import com.lopframework.lop.constant.ConstantParamName;
 
 /**
  * Description:  

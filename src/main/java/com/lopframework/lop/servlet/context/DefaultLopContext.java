@@ -89,7 +89,7 @@ public class DefaultLopContext implements LopContext {
 	}
 	
 	@Override
-	public HandlerChain getChannelHandlers() {
+	public HandlerChain getHandlerChain() {
 		return this.handlerChain;
 	}
 	

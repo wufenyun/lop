@@ -3,6 +3,10 @@
  */
 package com.lopframework.lop.service.request;
 
+import java.util.Locale;
+import java.util.Map;
+
+import com.lopframework.lop.constant.ResponseFormat;
 
 /**
  * @Description: 
@@ -11,16 +15,28 @@ package com.lopframework.lop.service.request;
  */
 
 public interface Request {
+    
+    String getRequestId();
+    
+	String getMethod();
+
+	String getVersion();
+
+	String getSign();
+
+	String getAppkey();
+
+	String getAccessToken();
+
+	String getTimestamp();
 	
-	public String getMethod();
-
-	public String getVersion();
-
-	public String getSign();
-
-	public String getAppkey();
-
-	public String getAccessToken();
-
-	public String getTimestamp();
+	Locale getLocale();
+	
+	String getClientIp();
+	
+	ResponseFormat getResponseFormat();
+	
+	Map<String,String> getAllParams();
+	
+	Map<String,String> getIgnoreSignParams();
 }

@@ -4,9 +4,12 @@
  */
 package com.lopframework.lop.service.request;
 
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.web.method.HandlerMethod;
+
+import com.lopframework.lop.constant.ResponseFormat;
 
 /**
  * Description:  基础请求类，包含了系统级参数
@@ -22,12 +25,15 @@ public class BaseRequest implements Request {
 	private String token;
 	private String accessToken;
 	private String timestamp;
-	
+	private String requestId;
+	private Locale locale;
+	private String clientIp;
+	private ResponseFormat responseFormat;
 	/**
 	 * 请求参数 
 	 */
-	private Map<String,Object> paramMap;
-	
+	private Map<String,String> allParams;
+	private Map<String,String> ignoreSignParams;
 	/**
 	 * api对应的处理器 
 	 */
@@ -97,14 +103,6 @@ public class BaseRequest implements Request {
 		this.timestamp = timestamp;
 	}
 
-    public Map<String,Object> getParamMap() {
-        return paramMap;
-    }
-
-    public void setParamMap(Map<String,Object> paramMap) {
-        this.paramMap = paramMap;
-    }
-
     public long getServiceStartTime() {
         return serviceStartTime;
     }
@@ -127,5 +125,53 @@ public class BaseRequest implements Request {
 
     public void setServiceHandler(HandlerMethod serviceHandler) {
         this.serviceHandler = serviceHandler;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
+    public String getClientIp() {
+        return clientIp;
+    }
+
+    public void setClientIp(String clientIp) {
+        this.clientIp = clientIp;
+    }
+
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+
+    public ResponseFormat getResponseFormat() {
+        return responseFormat;
+    }
+
+    public void setResponseFormat(ResponseFormat responseFormat) {
+        this.responseFormat = responseFormat;
+    }
+
+    public Map<String,String> getAllParams() {
+        return allParams;
+    }
+
+    public void setAllParams(Map<String,String> allParams) {
+        this.allParams = allParams;
+    }
+
+    public Map<String,String> getIgnoreSignParams() {
+        return ignoreSignParams;
+    }
+
+    public void setIgnoreSignParams(Map<String,String> ignoreSignParams) {
+        this.ignoreSignParams = ignoreSignParams;
     }
 }

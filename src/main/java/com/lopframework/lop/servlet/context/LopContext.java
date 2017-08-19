@@ -9,6 +9,8 @@ import java.util.Map;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.method.HandlerMethod;
 
+import com.lopframework.lop.service.handler.HandlerChain;
+
 
 /**
  * Description:  Lop上下文环境
@@ -22,7 +24,11 @@ public interface LopContext {
 	/**
 	 * 注册api handler
 	 */
-	void registMethodHandlers();
+	void registHandlerMethods();
+	
+	void registChannelHandlers();
+	
+	HandlerChain getHandlerChain();
 	
 	void setApplicationContext(ApplicationContext applicationContext);
 }

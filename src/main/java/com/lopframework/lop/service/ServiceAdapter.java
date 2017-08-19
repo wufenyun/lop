@@ -17,9 +17,9 @@ import org.springframework.core.MethodParameter;
 import org.springframework.web.method.HandlerMethod;
 
 import com.lopframework.lop.service.request.Session;
+import com.lopframework.lop.service.request.SessionHolder;
 import com.lopframework.lop.service.surpport.ArgumentResolver;
 import com.lopframework.lop.service.surpport.DefaultArgumentResolver;
-import com.lopframework.lop.servlet.context.SessionHolder;
 
 /**
  * Description:  
