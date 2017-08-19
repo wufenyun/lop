@@ -15,8 +15,12 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.method.HandlerMethod;
 
-import com.lopframework.lop.annotation.ServiceProcessor;
 import com.lopframework.lop.annotation.ServiceMapping;
+import com.lopframework.lop.annotation.ServiceProcessor;
+import com.lopframework.lop.service.controller.ParamValidater;
+import com.lopframework.lop.service.handler.ExecutionHandlerChain;
+import com.lopframework.lop.service.handler.HandlerChain;
+import com.lopframework.lop.service.handler.PreprocessingHandler;
 
 /**
  * Description:  
@@ -26,6 +30,8 @@ import com.lopframework.lop.annotation.ServiceMapping;
 public class DefaultLopContext implements LopContext {
 	
 	private final Map<String,HandlerMethod> handlerMethods = new HashMap<>();
+	
+	private final HandlerChain handlerChain = new ExecutionHandlerChain();
 	
 	private ApplicationContext applicationContext;
 	
@@ -37,7 +43,7 @@ public class DefaultLopContext implements LopContext {
 	}
 	
 	@Override
-	public void registMethodHandlers() {
+	public void registHandlerMethods() {
 		logger.info("start to regist handlers");
 		Map<String,Object> handlersMap = applicationContext.getBeansWithAnnotation(ServiceProcessor.class);
 		if(null == handlersMap) {
@@ -66,6 +72,27 @@ public class DefaultLopContext implements LopContext {
 		}
 	}
 
+	@Override
+	public void registChannelHandlers() {
+		logger.info("start to regist channel handlers");
+		Map<String,PreprocessingHandler> handlersMap = applicationContext.getBeansOfType(PreprocessingHandler.class);
+		if(null == handlersMap) {
+			return;
+		}
+		
+		for(Map.Entry<String, PreprocessingHandler> entry:handlersMap.entrySet()) {
+			handlerChain.addSubscriberHandlerFirst(entry.getValue());
+			logger.info("regist proccessing handler:{}",entry.getKey());
+		}
+		
+		handlerChain.addSytemHandlerFirst(new ParamValidater());
+	}
+	
+	@Override
+	public HandlerChain getChannelHandlers() {
+		return this.handlerChain;
+	}
+	
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
 		this.applicationContext = applicationContext;

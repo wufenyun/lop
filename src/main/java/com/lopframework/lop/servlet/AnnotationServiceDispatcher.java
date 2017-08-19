@@ -47,8 +47,6 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
     
     private final LopContext lopContext = new DefaultLopContext();
     
-    private HandlerChain handlerChain;
-    
     private ThreadPoolExecutor executor;
     
     private ServiceMapper serviceMapper;
@@ -65,7 +63,8 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
     public void startUp() {
         executor = new ThreadPoolExecutor(100, 200, 5, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>());
         lopContext.setApplicationContext(getApplicationContext());
-        lopContext.registMethodHandlers();
+        lopContext.registHandlerMethods();
+        lopContext.registChannelHandlers();
         serviceMapper = new ServiceMapper(lopContext);
         logger.info("Lop started");
     }
@@ -87,6 +86,11 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
             e.printStackTrace();
             logger.error(e.getMessage());
         }
+    }
+    
+    @Override
+    public void destroy() throws Exception {
+        
     }
     
     private class ServiceTask implements Runnable {
@@ -117,6 +121,7 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
                 session.setRequest(lopRequest);
                 SessionHolder.setSession(session);
                 //执行一系列系统操作
+                HandlerChain handlerChain = lopContext.getChannelHandlers();
                 LopError error = handlerChain.handle(lopRequest);
                 if(null == error) {
                     return;
@@ -125,7 +130,6 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
                 	// Determine handler for the current request.
                     HandlerMethod mappedHandler = serviceMapper.getHandlerMethod(lopRequest);
                     Object response = serviceAdapter.invokeHandlerMethod(mappedHandler,req,resp);
-                    //handler HttpServletResponse
                     handleResponse(response, resp);
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     e.printStackTrace();
@@ -144,10 +148,11 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
         response.setCharacterEncoding("UTF-8");  
         response.setContentType("application/json; charset=utf-8");  
         PrintWriter out = null;  
-        try {
+        try {  
             out = response.getWriter();  
             out.append(responseJSONObject.toString());  
-            logger.debug("return result:{}",responseJSONObject.toString());  
+            logger.debug("返回是\n");  
+            logger.debug(responseJSONObject.toString());  
         } catch (IOException e) {  
             e.printStackTrace();  
         } finally {  
@@ -155,12 +160,6 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
                 out.close();  
             }  
         }  
-    }
-    
-
-    @Override
-    public void destroy() throws Exception {
-        
     }
     
     @Override
