@@ -16,8 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.method.HandlerMethod;
 
-import com.lopframework.lop.service.request.Session;
-import com.lopframework.lop.service.request.SessionHolder;
 import com.lopframework.lop.service.surpport.ArgumentResolver;
 import com.lopframework.lop.service.surpport.DefaultArgumentResolver;
 
@@ -33,8 +31,6 @@ public class ServiceAdapter {
     private final static Logger logger = LoggerFactory.getLogger(ServiceAdapter.class);
     
     public Object invokeHandlerMethod(HandlerMethod handler,HttpServletRequest req, HttpServletResponse resp) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Session session = SessionHolder.getSession();
-        System.out.println(session.getBaseRequest().getMethod());
         MethodParameter[] params = handler.getMethodParameters();
         Object[] args = resolveArgument(params,req);
         return handler.getMethod().invoke(handler.getBean(),args);
