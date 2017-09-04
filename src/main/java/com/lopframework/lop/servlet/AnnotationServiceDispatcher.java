@@ -24,8 +24,10 @@ import org.springframework.web.context.support.WebApplicationObjectSupport;
 import org.springframework.web.method.HandlerMethod;
 
 import com.alibaba.fastjson.JSON;
-import com.lopframework.lop.constant.ResponseFormat;
-import com.lopframework.lop.error.LopError;
+import com.lopframework.lop.common.ResponseFormat;
+import com.lopframework.lop.common.error.LopError;
+import com.lopframework.lop.common.util.AssertUtil;
+import com.lopframework.lop.config.FrameConfig;
 import com.lopframework.lop.service.ServiceAdapter;
 import com.lopframework.lop.service.handler.HandlerChain;
 import com.lopframework.lop.service.request.Request;
@@ -37,14 +39,13 @@ import com.lopframework.lop.service.response.ResponseBuilder;
 import com.lopframework.lop.service.surpport.ServiceMapper;
 import com.lopframework.lop.servlet.context.DefaultLopContext;
 import com.lopframework.lop.servlet.context.LopContext;
-import com.lopframework.lop.util.AssertUtil;
 
 /**
  * Description:  
  * Date: 2017年5月22日 下午5:09:15
  * @author wufenyun 
  */
-public class AnnotationServiceDispatcher extends WebApplicationObjectSupport implements ServiceDispatcher, InitializingBean, DisposableBean {
+public final class AnnotationServiceDispatcher extends WebApplicationObjectSupport implements ServiceDispatcher, InitializingBean, DisposableBean {
     
     private final static Logger logger = LoggerFactory.getLogger(AnnotationServiceDispatcher.class);
     
@@ -52,10 +53,6 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
      * lop环境上下文，亦即lop的运行时容器 
      */
     private final LopContext lopContext = new DefaultLopContext();
-    /**
-     * 任务线程池构建类 
-     */
-    private final ThreadpoolBuilder threadpoolBuilder = new ThreadpoolBuilder();
     /**
      * api服务适配器
      */
@@ -68,6 +65,10 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
      * api服务映射器，当http请求到达时将请求映射到相应的服务 
      */
     private ServiceMapper serviceMapper;
+    /**
+     * 框架集配置信息 
+     */
+    private FrameConfig frameConfig;
     
     
     @Override
@@ -88,10 +89,9 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
     @Override
     public synchronized void startUp() {
         AssertUtil.notNull(getApplicationContext(), "spring applicationContext can not be null");
-        executor = threadpoolBuilder.buildExecutor();
         lopContext.setApplicationContext(getApplicationContext());
-        lopContext.registHandlerMethods();
         lopContext.registChannelHandlers();
+        lopContext.registHandlerMethods();
         serviceMapper = new ServiceMapper(lopContext);
     }
     
@@ -100,8 +100,8 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
         ServiceTask task = new ServiceTask(req, resp);
         Future<?> future = executor.submit(task);
         try {
-            while (!future.isDone()) {
-                future.get(1000, TimeUnit.SECONDS);
+            if (!future.isDone()) {
+                future.get(frameConfig.getTimeoutLimitSeconds(), TimeUnit.SECONDS);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -112,13 +112,12 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
         } catch (TimeoutException e) {
             e.printStackTrace();
             logger.error(e.getMessage());
+        } finally {
+            
         }
     }
     
-    @Override
-    public void destroy() throws Exception {
-        
-    }
+    
     
     private class ServiceTask implements Runnable {
         
@@ -165,8 +164,7 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
                 }
             } catch (Exception ex) {
                 //triggerAfterCompletion(processedRequest, response, mappedHandler, ex);
-            }
-            catch (Error err) {
+            } catch (Error err) {
                 //triggerAfterCompletionWithError(processedRequest, response, mappedHandler, err);
             } finally {
             	
@@ -184,19 +182,30 @@ public class AnnotationServiceDispatcher extends WebApplicationObjectSupport imp
             out.append(responseJSONObject.toString());  
             logger.debug("return result:\n{}",responseJSONObject.toString());  
         } catch (IOException e) {  
-            e.printStackTrace();  
+            e.printStackTrace();
         } finally {  
             if (out != null) {  
                 out.close();  
             }  
-        }  
+        }
     }
     
     @Override
     public void shutDown() {
-        
+        executor.shutdown();
     }
 
-
+    @Override
+    public void destroy() throws Exception {
+        
+    }
+    
+    public void setExecutor(ThreadPoolExecutor executor) {
+        this.executor = executor;
+    }
+    
+    public void setFrameConfig(FrameConfig frameConfig) {
+        this.frameConfig = frameConfig;
+    }
    
 }

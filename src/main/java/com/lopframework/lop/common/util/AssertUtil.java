@@ -2,7 +2,7 @@
  * Package: com.qingwei.common.util.support
  * Description: 
  */
-package com.lopframework.lop.util;
+package com.lopframework.lop.common.util;
 
 import java.util.Collection;
 import java.util.Map;

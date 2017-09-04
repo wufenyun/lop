@@ -6,7 +6,7 @@ package com.lopframework.lop.service.request;
 import java.util.Locale;
 import java.util.Map;
 
-import com.lopframework.lop.constant.ResponseFormat;
+import com.lopframework.lop.common.ResponseFormat;
 
 /**
  * @Description: 

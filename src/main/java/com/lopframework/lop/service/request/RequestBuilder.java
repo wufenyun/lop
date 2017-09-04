@@ -7,7 +7,7 @@ package com.lopframework.lop.service.request;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.lopframework.lop.constant.ConstantParamName;
+import com.lopframework.lop.common.ConstantParamName;
 
 /**
  * Description:  

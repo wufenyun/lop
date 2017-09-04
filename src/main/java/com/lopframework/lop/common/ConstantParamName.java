@@ -2,7 +2,7 @@
  * Package: com.lopframework.lop.servlet.context
  * Description: 
  */
-package com.lopframework.lop.constant;
+package com.lopframework.lop.common;
 
 /**
  * Description:  ISV请求必传参数名

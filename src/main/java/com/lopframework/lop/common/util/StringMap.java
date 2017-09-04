@@ -2,7 +2,7 @@
  * Package: com.lopframework.lop.util
  * Description: 
  */
-package com.lopframework.lop.util;
+package com.lopframework.lop.common.util;
 
 /**
  * Description:  

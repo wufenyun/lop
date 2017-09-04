@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.springframework.web.method.HandlerMethod;
 
-import com.lopframework.lop.constant.ResponseFormat;
+import com.lopframework.lop.common.ResponseFormat;
 
 /**
  * Description:  基础请求类，包含了系统级参数

@@ -2,7 +2,7 @@
  * Package: com.lopframework.lop.error
  * Description: 
  */
-package com.lopframework.lop.error;
+package com.lopframework.lop.common.error;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<xsd:schema xmlns="http://www.example.org/lop"
+<xsd:schema xmlns="http://www.lop.org/lop"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
     xmlns:beans="http://www.springframework.org/schema/beans"
     xmlns:tool="http://www.springframework.org/schema/tool"
-	targetNamespace="http://www.example.org/lop">
+	targetNamespace="http://www.lop.org/lop">
 	
 	<xsd:import namespace="http://www.springframework.org/schema/beans" />
     <xsd:import namespace="http://www.springframework.org/schema/tool" />
@@ -17,6 +17,11 @@
                             <xsd:documentation>name</xsd:documentation>
                         </xsd:annotation>
                     </xsd:attribute>
+                    <xsd:attribute name="threadpool-core-size" type="xsd:int"/>
+                    <xsd:attribute name="threadpool-max-size" type="xsd:int"/>
+                    <xsd:attribute name="threadpool-queue-capacity" type="xsd:int"/>
+                    <xsd:attribute name="threadpool-alive-seconds" type="xsd:int"/>
+                    <xsd:attribute name="service-timeout-seconds" type="xsd:int"/>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>

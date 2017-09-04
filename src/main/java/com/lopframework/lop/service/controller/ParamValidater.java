@@ -3,8 +3,8 @@
  */
 package com.lopframework.lop.service.controller;
 
-import com.lopframework.lop.error.GenericError;
-import com.lopframework.lop.error.LopError;
+import com.lopframework.lop.common.error.GenericError;
+import com.lopframework.lop.common.error.LopError;
 import com.lopframework.lop.service.handler.PreprocessingHandler;
 import com.lopframework.lop.service.request.Request;
 

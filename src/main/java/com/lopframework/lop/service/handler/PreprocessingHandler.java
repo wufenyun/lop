@@ -4,7 +4,7 @@
  */
 package com.lopframework.lop.service.handler;
 
-import com.lopframework.lop.error.LopError;
+import com.lopframework.lop.common.error.LopError;
 import com.lopframework.lop.service.request.Request;
 
 /**

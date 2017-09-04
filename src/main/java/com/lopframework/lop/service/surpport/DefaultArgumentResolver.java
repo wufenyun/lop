@@ -14,7 +14,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.lopframework.lop.util.AssertUtil;
+import com.lopframework.lop.common.util.AssertUtil;
 
 /**
  * @Description: 

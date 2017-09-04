@@ -2,7 +2,7 @@
  * Package: com.lopframework.lop.schema
  * Description: 
  */
-package com.lopframework.lop.schema;
+package com.lopframework.lop.config.spring;
 
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 

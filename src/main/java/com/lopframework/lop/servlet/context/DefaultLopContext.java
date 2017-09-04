@@ -15,8 +15,8 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.method.HandlerMethod;
 
-import com.lopframework.lop.annotation.ServiceMapping;
-import com.lopframework.lop.annotation.ServiceProcessor;
+import com.lopframework.lop.config.annotation.ServiceMapping;
+import com.lopframework.lop.config.annotation.ServiceProcessor;
 import com.lopframework.lop.service.controller.ParamValidater;
 import com.lopframework.lop.service.handler.ExecutionHandlerChain;
 import com.lopframework.lop.service.handler.HandlerChain;

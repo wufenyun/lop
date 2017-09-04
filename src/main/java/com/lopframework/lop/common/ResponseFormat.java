@@ -2,7 +2,7 @@
  * Package: com.lopframework.lop.constant
  * Description: 
  */
-package com.lopframework.lop.constant;
+package com.lopframework.lop.common;
 
 /**
  * Description:  

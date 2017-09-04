@@ -1,1 +1,1 @@
- http\://www.example.org/lop=com.lopframework.lop.schema.LopNameSpaceHandler
+ http\://www.lop.org/lop=com.lopframework.lop.config.spring.LopNameSpaceHandler
