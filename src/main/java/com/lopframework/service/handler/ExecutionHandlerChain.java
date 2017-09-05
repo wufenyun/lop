@@ -19,12 +19,12 @@ public class ExecutionHandlerChain implements HandlerChain {
     /**
      * 系统级的预处理器
      */
-    private volatile LinkedList<PreprocessingHandler> systemHandlers;
+    private volatile LinkedList<PreprocessingHandler> systemHandlers = new LinkedList<>();
     
     /**
      * 用户级预处理器 
      */
-    private volatile LinkedList<PreprocessingHandler> subscriberHandlers;
+    private volatile LinkedList<PreprocessingHandler> subscriberHandlers = new LinkedList<>();
     
     @Override
     public HandlerChain addSytemHandlerFirst(PreprocessingHandler handler) {
@@ -72,6 +72,7 @@ public class ExecutionHandlerChain implements HandlerChain {
                 return error;
             }
         }
+        
         for(PreprocessingHandler subscriberHandler:subscriberHandlers) {
             error = subscriberHandler.proccess(context);
             if(null != error) {
